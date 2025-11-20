@@ -52,13 +52,11 @@ const Navbar = () => {
             {navLinks}
           </ul>
         </div>
-        <Link to="/" className=" text-xl">
-          <div className="flex items-end ">
-            <img src={logo} alt="logo icon" />
-            <p className="font-bold text-3xl text-black -mb-1 -ml-3">
-              ZapShift
-            </p>
-          </div>
+        <Link to="/" className="flex items-center text-xl">
+          <img src={logo} alt="ZapShift logo" className="h-10 w-auto" />
+          <span className="font-bold text-3xl text-black -mb-5 -ml-3">
+            ZapShift
+          </span>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -67,7 +65,10 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link className="btn btn-outline text-base-content font-bold border-accent mx-2">
+        <Link
+          to="/login"
+          className="btn btn-outline text-base-content font-bold border-accent mx-2"
+        >
           Sign In
         </Link>
 
