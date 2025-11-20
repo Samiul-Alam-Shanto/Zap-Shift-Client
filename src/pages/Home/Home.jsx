@@ -6,6 +6,7 @@ import Brands from "./Brands";
 import Services from "./Services";
 import OurPriority from "./OurPriority";
 import CustomerCard from "./CustomerCard";
+import FAQ from "./FAQ";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <div className="my-14  w-full border-t-2 text-secondary border-dotted" />
       <OurPriority />
       <CustomerCard />
+      <FAQ />
     </div>
   );
 };
