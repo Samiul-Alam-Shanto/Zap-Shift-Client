@@ -28,7 +28,7 @@ const Brands = () => {
         We've helped thousands of sales teams
       </h2>
       <Swiper
-        loop={true}
+        // loop={true}
         autoplay={{
           delay: 800,
           disableOnInteraction: false,

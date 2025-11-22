@@ -4,6 +4,7 @@ import Icon from "../../../assets/UploadIcon.png";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const Register = () => {
   const {
@@ -14,12 +15,34 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const { registerUser, googleSignIn } = useAuth();
+  const { registerUser, googleSignIn, updateUserProfile } = useAuth();
 
   const handleRegister = (data) => {
     console.log(data);
+
+    const profileImage = data.photo[0];
+
     registerUser(data.email, data.password)
       .then(() => {
+        //store the image and get the photo url
+        const formData = new FormData();
+        formData.append("image", profileImage);
+
+        const imageAPI = `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_image_host
+        }`;
+
+        axios.post(imageAPI, formData).then((res) => {
+          //updateUserProfile
+          const userProfile = {
+            displayName: data.name,
+            photoURL: res.data.data.url,
+          };
+          updateUserProfile(userProfile)
+            .then(() => toast("profile updated"))
+            .catch((error) => toast(error.message));
+        });
+
         navigate("/");
         toast.success("Registration Successful");
       })
@@ -54,10 +77,12 @@ const Register = () => {
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  name=""
-                  id=""
+                  {...register("photo", { required: true })}
                 />
               </label>
+              {errors.photo && (
+                <p className="text-red-500">Photo is Required</p>
+              )}
               <label className="label text-accent-content text-sm">Name</label>
               <input
                 {...register("name", { required: true })}

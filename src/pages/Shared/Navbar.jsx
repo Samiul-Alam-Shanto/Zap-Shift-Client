@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const navigate = useNavigate();
+  // console.log(user);
 
   const navLinks = (
     <>
@@ -98,7 +99,7 @@ const Navbar = () => {
         <p className="btn btn-primary border-none pointer-events-none cursor-auto text-black">
           Be a Rider
         </p>
-        <Link>
+        <Link to="/be-a-rider">
           <GoArrowUpRight className="text-4xl bg-black hover:bg-primary hover:text-black rounded-full text-primary p-1 font-bold" />
         </Link>
       </div>

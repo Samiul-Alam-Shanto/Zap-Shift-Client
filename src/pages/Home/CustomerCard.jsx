@@ -33,7 +33,7 @@ const CustomerCard = () => {
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
-        loop={true}
+        // loop={true}
         slidesPerView={1}
         spaceBetween={0}
         autoplay={{
@@ -65,8 +65,8 @@ const CustomerCard = () => {
         modules={[EffectCoverflow, Pagination, Autoplay]}
         className="mySwiper mt-10"
       >
-        {reviews.map((review) => (
-          <SwiperSlide>
+        {reviews.map((review, i) => (
+          <SwiperSlide key={i}>
             <div className="flex items-center justify-center  bg-gray-50 p-4">
               <div className="max-w-[550px] w-full bg-white p-8 md:p-10 rounded-xl">
                 <div className="mb-4">

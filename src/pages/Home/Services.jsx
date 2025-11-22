@@ -23,8 +23,11 @@ const serviceInfo = [
 const Services = () => {
   return (
     <div className="flex flex-col gap-5 px-20">
-      {serviceInfo.map((info) => (
-        <div className="flex flex-wrap lg:flex-nowrap gap-20 bg-base-100 rounded-2xl justify-start  items-center p-10">
+      {serviceInfo.map((info, i) => (
+        <div
+          key={i}
+          className="flex flex-wrap lg:flex-nowrap gap-20 bg-base-100 rounded-2xl justify-start  items-center p-10"
+        >
           <img src={info.image} alt="" />
           <div className="h-32 hidden lg:block md:h-40 border-l-2 border-dotted border-secondary"></div>
           <div>
