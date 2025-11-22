@@ -1,6 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const {
@@ -8,30 +10,78 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
+
+  const { signInUser, googleSignIn } = useAuth();
+
+  const handleLogin = (data) => {
+    signInUser(data.email, data.password)
+      .then(() => {
+        navigate("/");
+        toast.success("Login Successful");
+      })
+      .catch((error) => toast.error(error.message));
+  };
+
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then(() => {
+        navigate("/");
+        toast.success("Login with Google is Successful");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
   return (
     <div>
       <h2 className="font-black text-secondary text-5xl">Welcome Back</h2>
       <p className="font-medium text-xl py-5">Login with ZapShift</p>
       <div className="card  w-full max-w-sm shrink-0 ">
         <div>
-          <form>
+          <form onSubmit={handleSubmit(handleLogin)}>
             <fieldset className="fieldset">
               <label className="label text-accent-content text-sm">Email</label>
               <input
                 type="email"
-                {...register("email")}
+                {...register("email", { required: true })}
                 className="input"
                 placeholder="Email"
               />
+              {errors.email && (
+                <p className="text-red-500">Must Enter a valid Email address</p>
+              )}
               <label className="label text-accent-content text-sm">
                 Password
               </label>
               <input
                 type="password"
-                {...register("password")}
+                {...register("password", {
+                  required: true,
+                  minLength: {
+                    value: 6,
+                    message: "Password Must be at least 6 characters",
+                  },
+                  pattern: {
+                    value:
+                      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/,
+                    message:
+                      "Must contain uppercase, lowercase, number and special character",
+                  },
+                })}
                 className="input"
                 placeholder="Password"
               />
+              {errors.password && (
+                <p className="text-red-500">Password is Required</p>
+              )}
+              {errors.password?.type === "pattern" && (
+                <p className="text-red-500">{errors.password.message}</p>
+              )}
+              {errors.password?.type === "minLength" && (
+                <p className="text-red-500">{errors.password.message}</p>
+              )}
+
               <div>
                 <a className="link link-hover text-sm">Forgot password?</a>
               </div>
@@ -50,7 +100,10 @@ const Login = () => {
             </Link>
           </p>
           <div className="divider">OR</div>
-          <button className="btn bg-base text-black w-full border-[#e5e5e5]">
+          <button
+            onClick={handleGoogleSignIn}
+            className="btn bg-base text-black w-full border-[#e5e5e5]"
+          >
             <svg
               aria-label="Google logo"
               width="16"

@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Icon from "../../../assets/UploadIcon.png";
 import { useForm } from "react-hook-form";
+import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const {
@@ -10,8 +12,32 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const handleRegister = (e) => {
-    e.preventDefault();
+  const navigate = useNavigate();
+
+  const { registerUser, googleSignIn } = useAuth();
+
+  const handleRegister = (data) => {
+    console.log(data);
+    registerUser(data.email, data.password)
+      .then(() => {
+        navigate("/");
+        toast.success("Registration Successful");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then(() => {
+        navigate("/");
+        toast.success("Registration with Google is Successful");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   return (
@@ -82,11 +108,8 @@ const Register = () => {
                 <p className="text-red-500">{errors.password.message}</p>
               )}
 
-              <div>
-                <a className="link link-hover text-sm">Forgot password?</a>
-              </div>
               <button className="btn  bg-primary text-sm text-accent-content mt-4">
-                Login
+                Sign Up
               </button>
             </fieldset>
           </form>
@@ -100,7 +123,10 @@ const Register = () => {
             </Link>
           </p>
           <div className="divider">OR</div>
-          <button className="btn bg-base text-black w-full border-[#e5e5e5]">
+          <button
+            onClick={handleGoogleSignIn}
+            className="btn bg-base text-black w-full border-[#e5e5e5]"
+          >
             <svg
               aria-label="Google logo"
               width="16"

@@ -1,9 +1,14 @@
 import React from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import logo from "../../assets/logo.png";
 import { GoArrowUpRight } from "react-icons/go";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const { user, logOut } = useAuth();
+  const navigate = useNavigate();
+
   const navLinks = (
     <>
       <li>
@@ -23,6 +28,15 @@ const Navbar = () => {
       </li>
     </>
   );
+
+  const handleSignOut = () => {
+    logOut()
+      .then(() => {
+        navigate("/");
+        toast.success("Logout successful");
+      })
+      .catch((error) => toast.error(error.message));
+  };
 
   return (
     <div className="navbar rounded-lg  bg-base-100 shadow-sm">
@@ -65,12 +79,21 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link
-          to="/login"
-          className="btn btn-outline text-base-content font-bold border-accent mx-2"
-        >
-          Sign In
-        </Link>
+        {user ? (
+          <button
+            onClick={handleSignOut}
+            className="btn btn-outline text-base-content font-bold border-accent mx-2"
+          >
+            Sign Out
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="btn btn-outline text-base-content font-bold border-accent mx-2"
+          >
+            Sign In
+          </Link>
+        )}
 
         <p className="btn btn-primary border-none pointer-events-none cursor-auto text-black">
           Be a Rider
