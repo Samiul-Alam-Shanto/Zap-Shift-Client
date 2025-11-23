@@ -93,6 +93,7 @@ const Login = () => {
           <p className="py-2 text-base-content">
             Don't have any account?{" "}
             <Link
+              state={location.state}
               to="/register"
               className="text-primary hover:text-secondary underline"
             >

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Icon from "../../../assets/UploadIcon.png";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
@@ -14,6 +14,7 @@ const Register = () => {
   } = useForm();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { registerUser, googleSignIn, updateUserProfile } = useAuth();
 
@@ -55,7 +56,7 @@ const Register = () => {
   const handleGoogleSignIn = () => {
     googleSignIn()
       .then(() => {
-        navigate("/");
+        navigate(location?.state || "/");
         toast.success("Registration with Google is Successful");
       })
       .catch((error) => {
@@ -141,6 +142,7 @@ const Register = () => {
           <p className="py-2 text-base-content">
             Already have an account?{" "}
             <Link
+              state={location.state}
               to="/login"
               className="text-primary hover:text-secondary underline"
             >
